@@ -1,0 +1,54 @@
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Common build and cache output
+dist/
+build/
+out/
+target/
+coverage/
+.cache/
+.tmp/
+tmp/
+
+# JavaScript / TypeScript projects
+node_modules/
+.pnpm-store/
+.corepack/
+.next/
+.nuxt/
+.turbo/
+*.tsbuildinfo
+
+# Python projects
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Agent-specific local artifacts
+.claude/
+.codex/tmp/
+
+# Deployment provider local state
+.vercel/
+.wrangler/

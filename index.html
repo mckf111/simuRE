@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo_01 | 生还协议</title>
+  </head>
+  <body>
+    <main id="game-shell" aria-label="生还协议游戏画面">
+      <canvas id="game-canvas"></canvas>
+
+      <section class="hud hud-top-left" aria-label="角色状态">
+        <div class="hud-row">
+          <span>生命</span>
+          <div class="meter"><i id="health-meter"></i></div>
+        </div>
+        <div class="hud-row">
+          <span>体力</span>
+          <div class="meter stamina"><i id="stamina-meter"></i></div>
+        </div>
+      </section>
+
+      <section class="hud hud-top-right" aria-label="威胁状态">
+        <div class="hud-number">
+          <span>波次</span>
+          <strong id="wave-value">1</strong>
+        </div>
+        <div class="hud-number">
+          <span>威胁</span>
+          <strong id="threat-value">0</strong>
+        </div>
+      </section>
+
+      <section class="hud hud-bottom-left" aria-label="战斗状态">
+        <div class="hud-number">
+          <span>弹药</span>
+          <strong><b id="ammo-value">10</b>/<b id="reserve-value">30</b></strong>
+        </div>
+        <div class="hud-number">
+          <span>分数</span>
+          <strong id="score-value">0</strong>
+        </div>
+      </section>
+
+      <div id="reticle" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div id="toast" role="status" aria-live="polite"></div>
+
+      <section id="start-overlay" class="overlay" aria-label="开始游戏">
+        <div class="overlay-panel">
+          <p class="eyebrow">原创生存动作原型</p>
+          <h1>生还协议</h1>
+          <p>肩后视角、有限弹药、逐波逼近的压力测试场。</p>
+          <dl class="control-hints" aria-label="操作说明">
+            <div>
+              <dt>移动</dt>
+              <dd><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dd>
+            </div>
+            <div>
+              <dt>视角</dt>
+              <dd>按住右键拖动 / 方向键</dd>
+            </div>
+            <div>
+              <dt>瞄准</dt>
+              <dd>鼠标右键</dd>
+            </div>
+            <div>
+              <dt>射击</dt>
+              <dd>鼠标左键</dd>
+            </div>
+            <div>
+              <dt>装填</dt>
+              <dd><kbd>R</kbd></dd>
+            </div>
+            <div>
+              <dt>近战</dt>
+              <dd><kbd>F</kbd></dd>
+            </div>
+            <div>
+              <dt>闪避</dt>
+              <dd>空格</dd>
+            </div>
+            <div>
+              <dt>奔跑</dt>
+              <dd><kbd>Shift</kbd></dd>
+            </div>
+          </dl>
+          <button id="start-button" type="button">开始巡逻</button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

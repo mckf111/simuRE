@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Project validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run fastest trusted validation
+        run: npm run build
+
+  commitlint:
+    name: Commit messages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate PR commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          bad=0
+          while IFS= read -r subject; do
+            if ! printf '%s' "$subject" | grep -Eq '^(feat|fix|docs|chore|refactor|test|style|perf|build|ci|revert)(\([^)]+\))?!?: .+'; then
+              echo "Invalid commit message: $subject"
+              bad=1
+            fi
+          done < <(git log --no-merges --pretty=%s "$BASE_SHA".."$HEAD_SHA")
+          exit "$bad"
+
+  changelog:
+    name: CHANGELOG updated for feat/fix
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check CHANGELOG was updated
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+
+          if printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" | grep -qF "[skip changelog]"; then
+            echo "Skipped: PR contains [skip changelog]"
+            exit 0
+          fi
+
+          user_facing=$(git log --no-merges --pretty=%s "$BASE_SHA".."$HEAD_SHA" \
+            | grep -E "^(feat|fix)(\([^)]+\))?!?:" || true)
+
+          if [ -z "$user_facing" ]; then
+            echo "No feat:/fix: commits; CHANGELOG update not required"
+            exit 0
+          fi
+
+          if git diff --name-only "$BASE_SHA"..."$HEAD_SHA" | grep -qx "CHANGELOG.md"; then
+            echo "CHANGELOG.md was updated"
+            exit 0
+          fi
+
+          echo "CHANGELOG.md not updated despite feat:/fix: commits."
+          echo "Add an entry under [Unreleased], change the commit type, or add [skip changelog] if not user-facing."
+          exit 1
