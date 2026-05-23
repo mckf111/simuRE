@@ -16,6 +16,7 @@
 - 项目接入 vibe-starter-GPT 项目宪法：AGENTS、spec、ADR、状态交接、架构边界、技术债和质量门禁模板。
 
 ### Changed
+- 将仓库 About/Description 文案确定为更偏玩家感受的版本。
 - 完善 README 仓库首页介绍，并补充可用于 GitHub Description 的项目一句话描述。
 - 准心改为跟随鼠标移动，并使用准心所在位置计算射击方向。
 - 视角调整改为按住鼠标右键拖动，鼠标自由移动时只移动准心。
