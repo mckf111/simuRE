@@ -62,6 +62,10 @@ npm run dev -- --host 127.0.0.1
 
 N/A。当前原型不需要环境变量，也不需要 secrets。
 
+## 许可证
+
+本项目使用 [MIT License](LICENSE)。
+
 ## 项目宪法
 
 - [AGENTS.md](AGENTS.md)：所有 agent 必读的最高规则源

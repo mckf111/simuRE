@@ -2,6 +2,7 @@
   "name": "demo-01",
   "version": "0.1.0",
   "description": "浏览器可玩的原创肩后视角生存动作原型，聚焦压迫感战斗、资源管理与键鼠手感。",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
