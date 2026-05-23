@@ -1,6 +1,7 @@
 {
   "name": "demo-01",
   "version": "0.1.0",
+  "description": "原创肩后视角生存动作 Web 3D 原型，验证移动、瞄准、射击、近战、敌人波次与资源管理手感。",
   "private": true,
   "type": "module",
   "scripts": {
